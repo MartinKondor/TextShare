@@ -1,0 +1,31 @@
+
+Table user {
+  id Integer
+  username String
+  email String
+  birthdate String
+  profile_img_url String
+}
+
+Table text {
+  id Integer
+  user_id Integer
+  timestamp Timestamp
+  content String
+}
+
+Table upvote {
+  user_id Integer
+  text_id Integer
+}
+
+Table downvote {
+  user_id Integer
+  text_id Integer
+}
+
+Ref: text.user_id > user.id
+Ref: upvote.user_id > user.id
+Ref: downvote.user_id > user.id
+Ref: upvote.text_id > text.id
+Ref: downvote.text_id > text.id
