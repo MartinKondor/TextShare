@@ -1,10 +1,24 @@
-package com.martinkondor.textshare.models;
+package com.martinkondor.textshare;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "text")
 public class TextModel {
-    private int id = -1;
-    private int userId = -1;
-    private String timestamp = null;
-    private String content = null;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    private int userId;
+    private String timestamp;
+    private String content;
+
+    public TextModel() {}
+
+    public TextModel(int userId, String timestamp, String content) {
+        this.userId = userId;
+        this.timestamp = timestamp;
+        this.content = content;
+    }
 
     public TextModel(int id, int userId, String timestamp, String content) {
         this.id = id;

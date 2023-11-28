@@ -1,12 +1,28 @@
-package com.martinkondor.textshare.models;
+package com.martinkondor.textshare;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "user")
 public class UserModel {
-    private int id = -1;
-    private String username = null;
-    private String email = null;
-    private String password = null;
-    private String birthdate = null;
-    private String profileImgUrl = null;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    private String username;
+    private String email;
+    private String password;
+    private String birthdate;
+    private String profileImgUrl;
+
+    public UserModel() {}
+
+    public UserModel(String username, String email, String password, String birthdate, String profileImgUrl) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.birthdate = birthdate;
+        this.profileImgUrl = profileImgUrl;
+    }
 
     public UserModel(int id, String username, String email, String password, String birthdate, String profileImgUrl) {
         this.id = id;

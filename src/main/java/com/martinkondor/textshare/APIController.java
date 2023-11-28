@@ -1,7 +1,6 @@
 package com.martinkondor.textshare;
 
-import com.martinkondor.textshare.models.TextModel;
-import com.martinkondor.textshare.models.UserModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Logger;
@@ -9,19 +8,40 @@ import java.util.logging.Logger;
 @RestController
 public class APIController {
 
-    private Logger logger = Logger.getLogger(APIController.class.getName());
-    private UserModel sessionUser = null;
+
+
+    private final Logger logger = Logger.getLogger(APIController.class.getName());
 
     @PostMapping("login")
-    public UserModel login(@RequestBody String emailOrUsername, @RequestBody String password) {
-        logger.info("login called");
+    public @ResponseBody UserModel login(@RequestBody LoginUserModel loginUserModel) {
+        logger.info(loginUserModel.toString());
+
+        // Search for user in database
+        // loginUserModel.getEmailOrUsername()
+
+        //UserModel foundUser = userService.getUserByUsername(loginUserModel.getEmailOrUsername());
+        // UserModel foundUser = userRespository.findByUsername(loginUserModel.getEmailOrUsername());
+        //logger.info(foundUser.toString());
+
         return null;
     }
 
     @PostMapping("signup")
     public UserModel signup(@RequestBody UserModel newUser) {
-        logger.info("signup called");
+        logger.info(newUser.toString());
         return null;
+    }
+
+    @PostMapping("logout")
+    public void logout() {
+        logger.info("logout is called");
+    }
+
+    @GetMapping("home")
+    public @ResponseBody String home() {
+        logger.info("home is called");
+        String message = "Here is a message";
+        return message;
     }
 
     @PutMapping("posting")

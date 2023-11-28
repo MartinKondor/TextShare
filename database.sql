@@ -9,28 +9,28 @@ CREATE TABLE `user` (
                         `email` VARCHAR(128),
                         `password` VARCHAR(128),
                         `birthdate` VARCHAR(10),
-                        `profile_img_url` VARCHAR(256)
+                        `profileImgUrl` VARCHAR(256)
 );
 
 CREATE TABLE `text` (
                         `id` INTEGER AUTO_INCREMENT PRIMARY KEY,
-                        `user_id` INTEGER,
+                        `userId` INTEGER,
                         `timestamp` VARCHAR(11),
                         `content` VARCHAR(1024)
 );
 
 CREATE TABLE `upvote` (
-                          `user_id` INTEGER,
-                          `text_id` INTEGER
+                          `userId` INTEGER,
+                          `textId` INTEGER
 );
 
 CREATE TABLE `downvote` (
-                            `user_id` INTEGER,
-                            `text_id` INTEGER
+                            `userId` INTEGER,
+                            `textId` INTEGER
 );
 
-ALTER TABLE `text` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
-ALTER TABLE `upvote` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
-ALTER TABLE `downvote` ADD FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
-ALTER TABLE `upvote` ADD FOREIGN KEY (`text_id`) REFERENCES `text` (`id`);
-ALTER TABLE `downvote` ADD FOREIGN KEY (`text_id`) REFERENCES `text` (`id`);
+ALTER TABLE `text` ADD FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+ALTER TABLE `upvote` ADD FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+ALTER TABLE `downvote` ADD FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+ALTER TABLE `upvote` ADD FOREIGN KEY (`textId`) REFERENCES `text` (`id`);
+ALTER TABLE `downvote` ADD FOREIGN KEY (`textId`) REFERENCES `text` (`id`);

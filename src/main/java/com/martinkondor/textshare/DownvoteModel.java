@@ -1,8 +1,15 @@
-package com.martinkondor.textshare.models;
+package com.martinkondor.textshare;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "downvote")
 public class DownvoteModel {
-    private int userId = -1;
-    private int textId = -1;
+    private int userId;
+    private int textId;
+
+    public DownvoteModel() {}
 
     public DownvoteModel(int userId, int textId) {
         this.userId = userId;
