@@ -1,11 +1,13 @@
 package com.martinkondor.textshare;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "downvote")
 public class DownvoteModel {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
     private int userId;
     private int textId;
 

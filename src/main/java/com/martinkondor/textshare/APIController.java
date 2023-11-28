@@ -1,42 +1,95 @@
 package com.martinkondor.textshare;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
 
 import java.util.logging.Logger;
 
 @RestController
 public class APIController {
 
+    @Autowired
+    private UserRepository userRepository;
 
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
 
     private final Logger logger = Logger.getLogger(APIController.class.getName());
 
     @PostMapping("login")
-    public @ResponseBody UserModel login(@RequestBody LoginUserModel loginUserModel) {
-        logger.info(loginUserModel.toString());
+    public @ResponseBody BaseResponse login(@RequestBody LoginUserRequest loginUserModel) {
+        UserModel foundUser;
 
-        // Search for user in database
-        // loginUserModel.getEmailOrUsername()
+        // Found by Username first
+        foundUser = userRepository.findByUsername(loginUserModel.getEmailOrUsername());
 
-        //UserModel foundUser = userService.getUserByUsername(loginUserModel.getEmailOrUsername());
-        // UserModel foundUser = userRespository.findByUsername(loginUserModel.getEmailOrUsername());
-        //logger.info(foundUser.toString());
+        // Found by Email instead
+        if (foundUser == null) foundUser = userRepository.findByEmail(loginUserModel.getEmailOrUsername());
 
-        return null;
+        if (foundUser == null) {
+            return new BaseResponse(0, "User not found");
+        }
+
+        // Check password
+        boolean passwordIsCorrect = passwordEncoder.matches(loginUserModel.getPassword(), foundUser.getPassword());
+        if (!passwordIsCorrect) {
+            return new BaseResponse(1, "Incorrect password");
+        }
+
+        // TODO: Log in the user to a session
+        return new BaseResponse(1, "Successful login");
     }
 
     @PostMapping("signup")
-    public UserModel signup(@RequestBody UserModel newUser) {
-        logger.info(newUser.toString());
-        return null;
+    public @ResponseBody BaseResponse signup(@RequestBody @Valid UserModel newUser, BindingResult bindingResult) {
+        if (userRepository.findByEmail(newUser.getEmail()) != null) {
+            return new BaseResponse(0, "The given email is already in use");
+        }
+        if (userRepository.findByUsername(newUser.getUsername()) != null) {
+            return new BaseResponse(0, "The given username is already in use");
+        }
+
+        // Validate user data
+        if (bindingResult.hasErrors()) {
+            String message = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return new BaseResponse(0, message);
+        }
+
+        // Encrypt password
+        String encryptedPassword = passwordEncoder.encode(newUser.getPassword());
+        newUser.setPassword(encryptedPassword);
+
+        // Save the user to the database
+        userRepository.save(newUser);
+        userRepository.flush();
+
+        // TODO: Log in the user to a session
+        return new BaseResponse(1, "Successful signup");
     }
 
     @PostMapping("logout")
-    public void logout() {
-        logger.info("logout is called");
+    public @ResponseBody BaseResponse logout() {
+        // TODO: Log out the user of the session
+        return new BaseResponse(0);
     }
 
+    @GetMapping("user/{username}")
+    public @ResponseBody UserModel viewUser(@PathVariable String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    @DeleteMapping("user/delete")
+    public @ResponseBody BaseResponse deleteUser(@RequestBody long id) {
+        userRepository.deleteById(id);
+        userRepository.flush();
+
+        // TODO: Log out the user of the session
+        return new BaseResponse(1);
+    }
+
+    /*
     @GetMapping("home")
     public @ResponseBody String home() {
         logger.info("home is called");
@@ -75,6 +128,6 @@ public class APIController {
         logger.info("getUser called");
         return null;
     }
-
+     */
     // TODO: Change User settings
 }

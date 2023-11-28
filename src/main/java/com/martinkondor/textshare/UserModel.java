@@ -1,36 +1,57 @@
 package com.martinkondor.textshare;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 @Table(name = "user")
 public class UserModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
+    @NotNull(message = "Username cannot be empty")
+    @Size(min=5, max=128, message = "The username's size must be between 5 and 128 characters")
     private String username;
+
+    @NotNull(message = "Email cannot be empty")
+    @Email(message = "You must give a proper email address")
+    @Size(min=5, max=128, message = "The email's size must be between 5 and 128 characters")
     private String email;
+
+    @NotNull(message = "Password cannot be empty")
+    @Size(min=5, max=128, message = "The password's size must be between 5 and 128 characters")
     private String password;
+
+    @NotNull(message = "Birthdate cannot be empty")
+    @Size(min=10, max=10, message = "The date must be in the following format: YYYY-MM-DD")
     private String birthdate;
+
+    @Size(min = 0, max = 32768, message = "The URL is too long")
     private String profileImgUrl;
 
     public UserModel() {}
 
     public UserModel(String username, String email, String password, String birthdate, String profileImgUrl) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.birthdate = birthdate;
-        this.profileImgUrl = profileImgUrl;
+        this.setUsername(username);
+        this.setEmail(email);
+        this.setPassword(password);
+        this.setBirthdate(birthdate);
+        this.setProfileImgUrl(profileImgUrl);
     }
 
     public UserModel(int id, String username, String email, String password, String birthdate, String profileImgUrl) {
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.birthdate = birthdate;
-        this.profileImgUrl = profileImgUrl;
+        this.setId(id);
+        this.setUsername(username);
+        this.setEmail(email);
+        this.setPassword(password);
+        this.setBirthdate(birthdate);
+        this.setProfileImgUrl(profileImgUrl);
     }
 
     public int getId() {

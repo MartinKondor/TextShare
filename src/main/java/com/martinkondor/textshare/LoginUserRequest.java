@@ -1,10 +1,10 @@
 package com.martinkondor.textshare;
 
-public class LoginUserModel {
+public class LoginUserRequest {
     private String emailOrUsername;
     private String password;
 
-    public LoginUserModel(String emailOrUsername, String password) {
+    public LoginUserRequest(String emailOrUsername, String password) {
         this.emailOrUsername = emailOrUsername;
         this.password = password;
     }

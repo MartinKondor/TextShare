@@ -1,6 +1,6 @@
 package com.martinkondor.textshare;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "text")
@@ -15,16 +15,16 @@ public class TextModel {
     public TextModel() {}
 
     public TextModel(int userId, String timestamp, String content) {
-        this.userId = userId;
-        this.timestamp = timestamp;
-        this.content = content;
+        this.setUserId(userId);
+        this.setTimestamp(timestamp);
+        this.setContent(content);
     }
 
     public TextModel(int id, int userId, String timestamp, String content) {
-        this.id = id;
-        this.userId = userId;
-        this.timestamp = timestamp;
-        this.content = content;
+        this.setId(id);
+        this.setUserId(userId);
+        this.setTimestamp(timestamp);
+        this.setContent(content);
     }
 
     public int getId() {
