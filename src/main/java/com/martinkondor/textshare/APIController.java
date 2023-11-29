@@ -16,6 +16,10 @@ public class APIController {
     private UserRepository userRepository;
     @Autowired
     private TextRepository textRepository;
+    @Autowired
+    private UpvoteRepository upvoteRepository;
+    @Autowired
+    private DownvoteRepository downvoteRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
     private final Logger logger = Logger.getLogger(APIController.class.getName());
 
@@ -122,51 +126,102 @@ public class APIController {
         }
 
         UserModel user = (UserModel) session.getAttribute("user");
-        String timestamp = "";
+        String timestamp = TextModel.createTimestamp();
         TextModel newText = new TextModel(user.getId(), timestamp, writeRequest.getContent());
 
-        // TODO: Save the new text
+        // Save the new text
+        textRepository.save(newText);
+        textRepository.flush();
         return new BaseResponse(1, "Successful writing");
     }
 
-    @GetMapping("home")
-    public @ResponseBody List<TextModel> home() {
+    @GetMapping("texts")
+    public @ResponseBody List<TextModel> texts() {
         List<TextModel> texts = textRepository.findAll();
         return texts;
     }
 
-    /*
-    @PutMapping("posting")
-    public void posting(@RequestBody TextModel newText) {
-        logger.info("postText called");
+    @GetMapping("texts/{username}")
+    public @ResponseBody List<TextModel> texts(@PathVariable String username) {
+        List<TextModel> texts = null;
+
+        // First find the user
+        UserModel user = userRepository.findByUsername(username);
+        if (user == null) {
+            return texts;
+        }
+        texts = textRepository.findAllByUserId(user.getId());
+        return texts;
     }
 
-    @PutMapping("upvote")
-    public void upvote(@RequestBody int textId) {
-        logger.info("upvote called");
+    @PutMapping("upvote/{textId}")
+    public @ResponseBody BaseResponse upvote(HttpSession session, @PathVariable long textId) {
+        // Check if it's logged in
+        if (session.getAttribute("user") == null) {
+            return new BaseResponse(0, "Please login for this action");
+        }
+        UserModel user = (UserModel) session.getAttribute("user");
+
+        // Find if there is already a vote
+        UpvoteModel upvote = upvoteRepository.findByUserIdAndAndTextId(user.getId(), textId);
+        DownvoteModel downvote = downvoteRepository.findByUserIdAndAndTextId(user.getId(), textId);
+        if (upvote != null) {
+            return new BaseResponse(1);
+        }
+        if (downvote != null) {
+            downvoteRepository.deleteById(downvote.getId());
+            downvoteRepository.flush();
+        }
+        // Adding upvote
+        UpvoteModel upvoteModel = new UpvoteModel(user.getId(), textId);
+        upvoteRepository.save(upvoteModel);
+        upvoteRepository.flush();
+        return new BaseResponse(1);
     }
 
-    @PutMapping("downvote")
-    public void downvote(@RequestBody int textId) {
-        logger.info("downvote called");
+    @PutMapping("downvote/{textId}")
+    public @ResponseBody BaseResponse downvote(HttpSession session, @PathVariable long textId) {
+        // Check if it's logged in
+        if (session.getAttribute("user") == null) {
+            return new BaseResponse(0, "Please login for this action");
+        }
+        UserModel user = (UserModel) session.getAttribute("user");
+
+        // Find if there is already a vote
+        UpvoteModel upvote = upvoteRepository.findByUserIdAndAndTextId(user.getId(), textId);
+        DownvoteModel downvote = downvoteRepository.findByUserIdAndAndTextId(user.getId(), textId);
+        if (downvote != null) {
+            return new BaseResponse(1);
+        }
+        if (upvote != null) {
+            upvoteRepository.deleteById(upvote.getId());
+            upvoteRepository.flush();
+        }
+        // Adding downvote
+        DownvoteModel downvoteModel = new DownvoteModel(user.getId(), textId);
+        downvoteRepository.save(downvoteModel);
+        downvoteRepository.flush();
+        return new BaseResponse(1);
     }
 
-    @DeleteMapping("unvote")
-    public void unvote(@RequestBody int textId) {
-        logger.info("unvote called");
-    }
+    @DeleteMapping("unvote/{textId}")
+    public @ResponseBody BaseResponse unvote(HttpSession session, @PathVariable int textId) {
+        // Check if it's logged in
+        if (session.getAttribute("user") == null) {
+            return new BaseResponse(0, "Please login for this action");
+        }
+        UserModel user = (UserModel) session.getAttribute("user");
 
-    @GetMapping("text/{textId}")
-    public TextModel getText(@PathVariable(value="textId") int textId) {
-        logger.info("getText called");
-        return null;
-    }
+        // Find if there is already a vote
+        UpvoteModel upvote = upvoteRepository.findByUserIdAndAndTextId(user.getId(), textId);
+        DownvoteModel downvote = downvoteRepository.findByUserIdAndAndTextId(user.getId(), textId);
 
-    @GetMapping("user/{userId}")
-    public UserModel getUser(@PathVariable(value="userId") int userId) {
-        logger.info("getUser called");
-        return null;
+        if (upvote != null) {
+            upvoteRepository.deleteById(upvote.getId());
+        }
+        if (downvote != null) {
+            downvoteRepository.deleteById(downvote.getId());
+        }
+        return new BaseResponse(1);
     }
-     */
-    // TODO: Change User settings
 }

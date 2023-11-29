@@ -5,9 +5,15 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Email;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "user")
+@Data
+@NoArgsConstructor
+@ToString
 public class UserModel {
 
     @Id
@@ -34,8 +40,6 @@ public class UserModel {
     @Size(min = 0, max = 32768, message = "The URL is too long")
     private String profileImgUrl;
 
-    public UserModel() {}
-
     public UserModel(String username, String email, String password, String birthdate, String profileImgUrl) {
         this.setUsername(username);
         this.setEmail(email);
@@ -51,65 +55,5 @@ public class UserModel {
         this.setPassword(password);
         this.setBirthdate(birthdate);
         this.setProfileImgUrl(profileImgUrl);
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getBirthdate() {
-        return birthdate;
-    }
-
-    public void setBirthdate(String birthdate) {
-        this.birthdate = birthdate;
-    }
-
-    public String getProfileImgUrl() {
-        return profileImgUrl;
-    }
-
-    public void setProfileImgUrl(String profileImgUrl) {
-        this.profileImgUrl = profileImgUrl;
-    }
-
-    @Override
-    public String toString() {
-        return "UserModel{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", birthdate='" + birthdate + '\'' +
-                ", profileImgUrl='" + profileImgUrl + '\'' +
-                '}';
     }
 }

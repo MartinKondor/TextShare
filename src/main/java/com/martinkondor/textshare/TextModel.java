@@ -2,9 +2,15 @@ package com.martinkondor.textshare;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Table(name = "text")
+@Data
+@NoArgsConstructor
+@ToString
 public class TextModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,8 +21,6 @@ public class TextModel {
     private String timestamp;
     @NotNull
     private String content;
-
-    public TextModel() {}
 
     public TextModel(long userId, String timestamp, String content) {
         this.setUserId(userId);
@@ -31,45 +35,9 @@ public class TextModel {
         this.setContent(content);
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long userId) {
-        this.userId = userId;
-    }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    @Override
-    public String toString() {
-        return "TextModel{" +
-                "id=" + id +
-                ", userId=" + userId +
-                ", timestamp='" + timestamp + '\'' +
-                ", content='" + content + '\'' +
-                '}';
+    public static String createTimestamp() {
+        long unixTimestampMillis = System.currentTimeMillis();
+        long unixTimestampSeconds = unixTimestampMillis / 1000;
+        return String.valueOf(unixTimestampSeconds);
     }
 }
