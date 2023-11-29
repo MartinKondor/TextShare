@@ -1,8 +1,14 @@
 package com.martinkondor.textshare;
 
+import jakarta.validation.constraints.NotNull;
+
 public class LoginUserRequest {
+    @NotNull
     private String emailOrUsername;
+    @NotNull
     private String password;
+
+    public LoginUserRequest() {}
 
     public LoginUserRequest(String emailOrUsername, String password) {
         this.emailOrUsername = emailOrUsername;

@@ -6,22 +6,28 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
 import jakarta.servlet.http.HttpSession;
 
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
 @RestController
 public class APIController {
-
     @Autowired
     private UserRepository userRepository;
-
+    @Autowired
+    private TextRepository textRepository;
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(16);
-
     private final Logger logger = Logger.getLogger(APIController.class.getName());
 
     @PostMapping("login")
     public @ResponseBody BaseResponse login(HttpSession session,
-                                            @RequestBody LoginUserRequest loginUserModel) {
+                                            @RequestBody @Valid LoginUserRequest loginUserModel,
+                                            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String message = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return new BaseResponse(0, message);
+        }
+
         UserModel foundUser;
 
         // Found by Username first
@@ -101,14 +107,35 @@ public class APIController {
         return new BaseResponse(1, "Successful user/delete");
     }
 
-    /*
-    @GetMapping("home")
-    public @ResponseBody String home() {
-        logger.info("home is called");
-        String message = "Here is a message";
-        return message;
+    @PostMapping("write")
+    public @ResponseBody BaseResponse write(HttpSession session,
+                                           @RequestBody @Valid WriteRequest writeRequest,
+                                           BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String message = bindingResult.getAllErrors().get(0).getDefaultMessage();
+            return new BaseResponse(0, message);
+        }
+
+        // Check if it's logged in
+        if (session.getAttribute("user") == null) {
+            return new BaseResponse(0, "Please login for this action");
+        }
+
+        UserModel user = (UserModel) session.getAttribute("user");
+        String timestamp = "";
+        TextModel newText = new TextModel(user.getId(), timestamp, writeRequest.getContent());
+
+        // TODO: Save the new text
+        return new BaseResponse(1, "Successful writing");
     }
 
+    @GetMapping("home")
+    public @ResponseBody List<TextModel> home() {
+        List<TextModel> texts = textRepository.findAll();
+        return texts;
+    }
+
+    /*
     @PutMapping("posting")
     public void posting(@RequestBody TextModel newText) {
         logger.info("postText called");

@@ -8,12 +8,12 @@ public class UpvoteModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private int userId;
-    private int textId;
+    private long userId;
+    private long textId;
 
     public UpvoteModel() {}
 
-    public UpvoteModel(int userId, int textId) {
+    public UpvoteModel(long userId, long textId) {
         this.userId = userId;
         this.textId = textId;
     }
@@ -26,19 +26,19 @@ public class UpvoteModel {
         this.id = id;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
-    public int getTextId() {
+    public long getTextId() {
         return textId;
     }
 
-    public void setTextId(int textId) {
+    public void setTextId(long textId) {
         this.textId = textId;
     }
 

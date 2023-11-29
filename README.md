@@ -14,6 +14,7 @@ Platform to share text, users can up- or down-vote Texts but that's it.
 * React
 * Postman
 * TDD - Test Driven Development
+* IntelliJ IDEA
 * Software design
 * Database design
 * API design

@@ -44,7 +44,7 @@ public class UserModel {
         this.setProfileImgUrl(profileImgUrl);
     }
 
-    public UserModel(int id, String username, String email, String password, String birthdate, String profileImgUrl) {
+    public UserModel(long id, String username, String email, String password, String birthdate, String profileImgUrl) {
         this.setId(id);
         this.setUsername(username);
         this.setEmail(email);

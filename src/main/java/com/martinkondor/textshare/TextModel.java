@@ -1,6 +1,7 @@
 package com.martinkondor.textshare;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "text")
@@ -8,19 +9,22 @@ public class TextModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private int userId;
+    @NotNull
+    private long userId;
+    @NotNull
     private String timestamp;
+    @NotNull
     private String content;
 
     public TextModel() {}
 
-    public TextModel(int userId, String timestamp, String content) {
+    public TextModel(long userId, String timestamp, String content) {
         this.setUserId(userId);
         this.setTimestamp(timestamp);
         this.setContent(content);
     }
 
-    public TextModel(int id, int userId, String timestamp, String content) {
+    public TextModel(long id, long userId, String timestamp, String content) {
         this.setId(id);
         this.setUserId(userId);
         this.setTimestamp(timestamp);
@@ -35,11 +39,11 @@ public class TextModel {
         this.id = id;
     }
 
-    public int getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
