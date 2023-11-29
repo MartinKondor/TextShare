@@ -5,7 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class BCryptPasswordEncoder {
-    private int length;
+    private final int length;
     private final String staticSaltLeft = "QUYmhP9CenH";
     private final String staticSaltRight = "AvarjGDyK5c";
 
@@ -36,13 +36,5 @@ public class BCryptPasswordEncoder {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    public int getLength() {
-        return length;
-    }
-
-    public void setLength(int length) {
-        this.length = length;
     }
 }
