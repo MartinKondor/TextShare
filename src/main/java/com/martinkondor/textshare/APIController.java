@@ -142,7 +142,7 @@ public class APIController {
     }
 
     @GetMapping("texts/{username}")
-    public @ResponseBody List<TextModel> texts(@PathVariable String username) {
+    public @ResponseBody List<TextModel> viewUserTexts(@PathVariable String username) {
         List<TextModel> texts = null;
 
         // First find the user
