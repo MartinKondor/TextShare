@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class TextModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
     private int userId;
     private String timestamp;
     private String content;
@@ -27,11 +27,11 @@ public class TextModel {
         this.setContent(content);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -5,7 +5,6 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Email;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
 @Table(name = "user")
@@ -13,7 +12,7 @@ public class UserModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
 
     @NotNull(message = "Username cannot be empty")
     @Size(min=5, max=128, message = "The username's size must be between 5 and 128 characters")
@@ -54,11 +53,11 @@ public class UserModel {
         this.setProfileImgUrl(profileImgUrl);
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

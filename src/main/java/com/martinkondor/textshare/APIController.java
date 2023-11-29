@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
 import jakarta.servlet.http.HttpSession;
+
+import java.util.Map;
 import java.util.logging.Logger;
 
 @RestController
@@ -18,7 +20,8 @@ public class APIController {
     private final Logger logger = Logger.getLogger(APIController.class.getName());
 
     @PostMapping("login")
-    public @ResponseBody BaseResponse login(@RequestBody LoginUserRequest loginUserModel) {
+    public @ResponseBody BaseResponse login(HttpSession session,
+                                            @RequestBody LoginUserRequest loginUserModel) {
         UserModel foundUser;
 
         // Found by Username first
@@ -34,15 +37,19 @@ public class APIController {
         // Check password
         boolean passwordIsCorrect = passwordEncoder.matches(loginUserModel.getPassword(), foundUser.getPassword());
         if (!passwordIsCorrect) {
-            return new BaseResponse(1, "Incorrect password");
+            return new BaseResponse(0, "Incorrect password");
         }
 
-        // TODO: Log in the user to a session
+        // Log in the user to a session
+        session.setAttribute("user", foundUser);
         return new BaseResponse(1, "Successful login");
     }
 
     @PostMapping("signup")
-    public @ResponseBody BaseResponse signup(@RequestBody @Valid UserModel newUser, BindingResult bindingResult) {
+    public @ResponseBody BaseResponse signup(HttpSession session,
+                                             @RequestBody @Valid UserModel newUser,
+                                             BindingResult bindingResult) {
+
         if (userRepository.findByEmail(newUser.getEmail()) != null) {
             return new BaseResponse(0, "The given email is already in use");
         }
@@ -64,14 +71,17 @@ public class APIController {
         userRepository.save(newUser);
         userRepository.flush();
 
-        // TODO: Log in the user to a session
+        // Log in the user to a session
+        session.setAttribute("user", newUser);
         return new BaseResponse(1, "Successful signup");
     }
 
     @PostMapping("logout")
-    public @ResponseBody BaseResponse logout() {
-        // TODO: Log out the user of the session
-        return new BaseResponse(0);
+    public @ResponseBody BaseResponse logout(HttpSession session) {
+
+        // Log out the user of the session
+        session.removeAttribute("user");
+        return new BaseResponse(1, "Successful logout");
     }
 
     @GetMapping("user/{username}")
@@ -80,12 +90,15 @@ public class APIController {
     }
 
     @DeleteMapping("user/delete")
-    public @ResponseBody BaseResponse deleteUser(@RequestBody long id) {
-        userRepository.deleteById(id);
+    public @ResponseBody BaseResponse deleteUser(@RequestBody Map<String, Long> jsonObject) {
+        if (!jsonObject.containsKey("userId")) {
+            return new BaseResponse(0, "Invalid JSON input");
+        }
+        userRepository.deleteById(jsonObject.get("userId"));
         userRepository.flush();
 
-        // TODO: Log out the user of the session
-        return new BaseResponse(1);
+        // Log out the user of the session
+        return new BaseResponse(1, "Successful user/delete");
     }
 
     /*

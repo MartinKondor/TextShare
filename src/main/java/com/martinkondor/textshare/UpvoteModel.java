@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class UpvoteModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private long id;
     private int userId;
     private int textId;
 
@@ -16,6 +16,14 @@ public class UpvoteModel {
     public UpvoteModel(int userId, int textId) {
         this.userId = userId;
         this.textId = textId;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public int getUserId() {
