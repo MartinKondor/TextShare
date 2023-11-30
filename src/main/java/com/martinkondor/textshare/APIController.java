@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
 import jakarta.servlet.http.HttpSession;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -136,9 +137,29 @@ public class APIController {
     }
 
     @GetMapping("texts")
-    public @ResponseBody List<TextModel> texts() {
+    public @ResponseBody List<TextModel> texts(@RequestBody SearchRequest searchRequest) {
+        return searchRequest.search(textRepository.findAll());
+    }
+
+    @GetMapping("home")
+    public @ResponseBody List<TextModelWithVotes> home(@RequestBody SearchRequest searchRequest) {
         List<TextModel> texts = textRepository.findAll();
-        return texts;
+        ArrayList<TextModelWithVotes> textsWithVotes = new ArrayList<TextModelWithVotes>();
+
+        for (TextModel t : texts) {
+            TextModelWithVotes tv = new TextModelWithVotes();
+            tv.setId(t.getId());
+            tv.setTimestamp(t.getTimestamp());
+            tv.setUserId(t.getUserId());
+            tv.setContent(t.getContent());
+
+            // Gather the votes for every TextModel
+            tv.setDownvotes(downvoteRepository.findAllByTextId(tv.getId()));
+            tv.setUpvotes(upvoteRepository.findAllByTextId(tv.getId()));
+            textsWithVotes.add(tv);
+        }
+
+        return searchRequest.searchWithVotes(textsWithVotes);
     }
 
     @GetMapping("texts/{username}")
