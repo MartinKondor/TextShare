@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-@RestController
+@RestController()
+@RequestMapping("/api/")
 public class APIController {
     @Autowired
     private UserRepository userRepository;

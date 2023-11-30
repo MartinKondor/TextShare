@@ -1,0 +1,142 @@
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+body {
+    line-height: 1;
+    background-color: #333; /* Dark background color */
+    color: #fff; /* Light text color */
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+    color: #fff; /* Light text color */
+}
+
+nav ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+
+a {
+    margin: 0;
+    padding: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+    color: #6f7d8c; /* Light link color */
+}
+
+/* change colors to suit your needs */
+ins {
+    background-color: #555; /* Dark background color */
+    color: #fff; /* Light text color */
+    text-decoration: none;
+}
+
+/* change colors to suit your needs */
+mark {
+    background-color: #555; /* Dark background color */
+    color: #fff; /* Light text color */
+    font-style: italic;
+    font-weight: bold;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+abbr[title], dfn[title] {
+    border-bottom: 1px dotted;
+    cursor: help;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    color: #fff; /* Light text color */
+}
+
+/* change border color to suit your needs */
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #666; /* Dark border color */
+    margin: 1em 0;
+    padding: 0;
+}
+
+input, select {
+    vertical-align: middle;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+    color: #66d9ef; /* Light code color */
+}
+
+main {
+    padding: 20px;
+}
+
+p {
+    color: #f1f1f1;
+}
+
+.text-body {
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 20px rgba(64, 64, 64, 0.45);
+    background-color: #444; /* Dark background color */
+}
+
+.text-body img {
+    width: 20px;
+    margin-right: 5px;
+}
+
+.downvote {
+    color: #ff5252; /* Red downvote color */
+}
+
+.upvote {
+    color: #4caf50; /* Green upvote color */
+}

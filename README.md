@@ -2,17 +2,17 @@
 
 Platform to share text, users can up- or down-vote Texts but that's it.
 
-## Skills Required
+## Skills Practiced
 * Java-Spring
 * SQL
 * Maven
-* Docker
-* Travis CI
+* Postman
 * REST API
 * HTML/CSS/JavaScript
 * Bootstrap 5
 * React
-* Postman
+* Docker
+* Travis CI
 * TDD - Test Driven Development
 * IntelliJ IDEA
 * Software design
@@ -28,3 +28,8 @@ Platform to share text, users can up- or down-vote Texts but that's it.
 * Initial front-end implementation
 * Refine and fix the implementations
 * [Android App](https://github.com/MartinKondor/TextShareApp)
+
+## How to Use
+1. Start up the Java server (http://127.0.0.1:8080/)
+2. Start up the React server from the frontend directory (http://127.0.0.1:3000/)
+3. Go to http://127.0.0.1:3000/ in your browser
