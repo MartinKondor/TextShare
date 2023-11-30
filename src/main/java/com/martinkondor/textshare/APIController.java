@@ -142,20 +142,44 @@ public class APIController {
     }
 
     @GetMapping("home")
-    public @ResponseBody List<TextModelWithVotes> home(@RequestBody SearchRequest searchRequest) {
+    public @ResponseBody List<TextForView> home(@RequestBody SearchRequest searchRequest) {
         List<TextModel> texts = textRepository.findAll();
-        ArrayList<TextModelWithVotes> textsWithVotes = new ArrayList<TextModelWithVotes>();
+        ArrayList<TextForView> textsWithVotes = new ArrayList<TextForView>();
 
+        // Gather the votes & their data for every TextModel
         for (TextModel t : texts) {
-            TextModelWithVotes tv = new TextModelWithVotes();
+            TextForView tv = new TextForView();
             tv.setId(t.getId());
             tv.setTimestamp(t.getTimestamp());
             tv.setUserId(t.getUserId());
             tv.setContent(t.getContent());
+            tv.setUser(userRepository.findById(tv.getUserId()));
 
-            // Gather the votes for every TextModel
-            tv.setDownvotes(downvoteRepository.findAllByTextId(tv.getId()));
-            tv.setUpvotes(upvoteRepository.findAllByTextId(tv.getId()));
+            List<DownvoteModel> downvotes = downvoteRepository.findAllByTextId(tv.getId());
+            List<UpvoteModel> upvotes = upvoteRepository.findAllByTextId(tv.getId());
+
+            ArrayList<DownvoteForView> downvotesForView = new ArrayList<DownvoteForView>();
+            ArrayList<UpvoteForView> upvotesForView = new ArrayList<UpvoteForView>();
+
+            for (UpvoteModel u : upvotes) {
+                UpvoteForView uv = new UpvoteForView();
+                uv.setId(u.getId());
+                uv.setUserId(u.getUserId());
+                uv.setTextId(u.getTextId());
+                uv.setUser(userRepository.findById(u.getUserId()));
+                upvotesForView.add(uv);
+            }
+            for (DownvoteModel u : downvotes) {
+                DownvoteForView uv = new DownvoteForView();
+                uv.setId(u.getId());
+                uv.setUserId(u.getUserId());
+                uv.setTextId(u.getTextId());
+                uv.setUser(userRepository.findById(u.getUserId()));
+                downvotesForView.add(uv);
+            }
+
+            tv.setUpvotes(upvotesForView);
+            tv.setDownvotes(downvotesForView);
             textsWithVotes.add(tv);
         }
 

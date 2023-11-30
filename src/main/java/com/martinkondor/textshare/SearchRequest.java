@@ -39,25 +39,25 @@ public class SearchRequest {
         return stream.limit(this.getNumberOfEntities()).toList();
     }
 
-    public List<TextModelWithVotes> searchWithVotes(List<TextModelWithVotes> entities) {
-        Comparator<TextModelWithVotes> timestampComparator = new Comparator<>() {
+    public List<TextForView> searchWithVotes(List<TextForView> entities) {
+        Comparator<TextForView> timestampComparator = new Comparator<>() {
             @Override
-            public int compare(TextModelWithVotes o1, TextModelWithVotes o2) {
+            public int compare(TextForView o1, TextForView o2) {
                 Long t1 = Long.valueOf(o1.getTimestamp());
                 Long t2 = Long.valueOf(o2.getTimestamp());
                 return t2.compareTo(t1);
             }
         };
-        Comparator<TextModelWithVotes> votesComparator = new Comparator<>() {
+        Comparator<TextForView> votesComparator = new Comparator<>() {
             @Override
-            public int compare(TextModelWithVotes o1, TextModelWithVotes o2) {
+            public int compare(TextForView o1, TextForView o2) {
                 Integer i1 = o1.getUpvotes().size() - o1.getDownvotes().size();
                 Integer i2 = o2.getUpvotes().size() - o2.getDownvotes().size();
                 return i2.compareTo(i1);
             }
         };
 
-        Stream<TextModelWithVotes> stream = entities.stream().sorted(timestampComparator).sorted(votesComparator);
+        Stream<TextForView> stream = entities.stream().sorted(timestampComparator).sorted(votesComparator);
         if (this.getSearchPhrase() != null) {
             stream = stream.filter(t -> t.getContent().contains(this.getSearchPhrase()));
         }
