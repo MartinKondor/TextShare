@@ -30,6 +30,7 @@ Platform to share text, users can up- or down-vote Texts but that's it.
 * [Android App](https://github.com/MartinKondor/TextShareApp)
 
 ## How to Use
-1. Start up the Java server (http://127.0.0.1:8080/)
+1. Start or initialize the database using the [database.sql](./database.sql) file
+2. Start up the Java server (http://127.0.0.1:8080/)
 2. Start up the React server from the frontend directory (http://127.0.0.1:3000/)
 3. Go to http://127.0.0.1:3000/ in your browser

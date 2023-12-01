@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController()
 @RequestMapping("/api/")
 public class APIController {
@@ -96,6 +97,7 @@ public class APIController {
         return new BaseResponse(1, "Successful logout");
     }
 
+
     @GetMapping("user/{username}")
     public @ResponseBody UserModel viewUser(@PathVariable String username) {
         return userRepository.findByUsername(username);
@@ -143,7 +145,8 @@ public class APIController {
     }
 
     @GetMapping("home")
-    public @ResponseBody List<TextForView> home(@RequestBody SearchRequest searchRequest) {
+    public @ResponseBody List<TextForView> home() {
+        SearchRequest searchRequest = new SearchRequest();
         List<TextModel> texts = textRepository.findAll();
         ArrayList<TextForView> textsWithVotes = new ArrayList<TextForView>();
 
